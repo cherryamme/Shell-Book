@@ -1,0 +1,18 @@
+{
+    // ... 其他设置项
+
+    "customCommands.commands": [
+        {
+            "label": "List files",
+            "description": "List all files in the current directory",
+            "command": "ls"
+        },
+        {
+            "label": "Git status",
+            "description": "Show git status",
+            "command": "git status"
+        }
+    ]
+
+    // ... 其他设置项
+}
