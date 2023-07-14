@@ -122,26 +122,36 @@ export function activate(context: vscode.ExtensionContext) {
         borderRadius: '0px',
         isWholeLine: true
     });
-    
+
     async function updateDecorations(editor: vscode.TextEditor | undefined) {
         if (editor && editor.document.languageId === 'shellscript') {
             vscode.commands.executeCommand('setContext', 'isShellScript', true);
-    
             const codeChunks = await runShellCodeLensProvider.provideCodeLenses(editor.document);
-    
-            if (codeChunks) {
-                const codeChunkRanges = codeChunks.map(chunk => chunk.range);
-                editor.setDecorations(codeChunkDecorationType, codeChunkRanges);
+
+            const maxAttempts = 3;
+            const attemptInterval = 1000; // 2000 milliseconds = 2 seconds
+            const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+
+            for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                if (codeChunks) {
+                    const codeChunkRanges = codeChunks.map(chunk => chunk.range);
+                    editor.setDecorations(codeChunkDecorationType, codeChunkRanges);
+                    break;
+                }
+                await delay(attemptInterval);
             }
         }
     }
-    
-    vscode.workspace.onDidOpenTextDocument(async (document) => {
-        updateDecorations(vscode.window.activeTextEditor);
+    vscode.workspace.onDidSaveTextDocument(async (document) => {
+        await updateDecorations(vscode.window.activeTextEditor);
     });
-    
+    vscode.workspace.onDidOpenTextDocument(async (document) => {
+        await updateDecorations(vscode.window.activeTextEditor);
+    });
+
     vscode.workspace.onDidChangeTextDocument(async (event) => {
-        updateDecorations(vscode.window.activeTextEditor);
+        await updateDecorations(vscode.window.activeTextEditor);
     });
 }
 
