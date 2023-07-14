@@ -2,8 +2,8 @@
   "name": "shellhero",
   "publisher": "cherryamme",
   "displayName": "Shell Hero",
-  "description": "增强shell脚本开发体验，自定义指令，快速执行",
-  "version": "0.0.2",
+  "description": "shell脚本codechunk，增强shell脚本开发体验，快速执行自定义指令",
+  "version": "0.0.3",
   "icon": "icon.png",
   "repository": {
 		"type": "git",
@@ -34,17 +34,17 @@
           "type": "array",
           "default": [
             {
-              "label": "watch -n 1 'qstat' ",
-              "description": "监控qstat任务"
+              "label": "🤣监控qstat任务",
+              "description": "watch -n 1 'qstat' "
             },
             {
-              "label": "ls",
-              "description": "列出当前目录",
+              "label": "😆列出当前目录",
+              "description": "ls",
               "picked": false
             },
             {
-              "label": "echo test",
-              "description": "测试命令",
+              "label": "🤐测试命令",
+              "description": "echo test",
               "picked": true
             }
           ],

@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
             const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
             terminal.show();
             const command: boolean = selection[0].picked === true;
-            terminal.sendText(`${selection[0].label}`, command);
+            terminal.sendText(`${selection[0].description}`, command);
         }
         quickPick.hide();
     });
