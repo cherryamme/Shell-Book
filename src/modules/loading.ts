@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 
 export function addFunctionsToBashrc() {
 	const bashrcPath = path.join(os.homedir(), '.bashrc');
-	const extensionPath = vscode.extensions.getExtension('cherryamme.shellhero')?.extensionPath;
+	const extensionPath = vscode.extensions.getExtension('cherryamme.shellbook')?.extensionPath;
 	if (!extensionPath) {
 		vscode.window.showErrorMessage('Failed to get extension path');
 		return;

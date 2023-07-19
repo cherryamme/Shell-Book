@@ -3,7 +3,7 @@
   "publisher": "cherryamme",
   "displayName": "Shell Book",
   "description": "让你的shell脚本向notebook一样好用，显示codechunk，添加snippets，增强shell脚本开发体验，快速执行自定义指令",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "icon": "icon.png",
   "repository": {
 		"type": "git",
