@@ -1,4 +1,3 @@
-if [[ $- =~ "i" ]];then echo "loading shell hero function" ;fi
 
 usage() {
     # Function: Print a help message.
