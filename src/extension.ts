@@ -2,11 +2,12 @@ import * as vscode from 'vscode';
 import { QuickPickItem, window, Terminal } from 'vscode';
 import {addFunctionsToBashrc} from './modules/loading';
 import { sendToTerminal,sendToQsub,createQuickPick,createStatusBarItem,ADD_COMMAND } from "./modules/command";
-
+import { log } from "./modules/logging";
 import { settings,updateSettings } from "./modules/config";
 import { RunShellCodeLensProvider,codeChunkDecorationType,updateDecorations } from "./modules/codechunk";
 
 export function activate(context: vscode.ExtensionContext) {
+    log.appendLine('shell Book extension activated');
     addFunctionsToBashrc();
     // Register a command for the user to manually trigger the function
     context.subscriptions.push(vscode.commands.registerCommand('shellbook.addBashFunctions', () => {addFunctionsToBashrc();}));

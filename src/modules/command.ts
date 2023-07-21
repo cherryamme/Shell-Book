@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { settings } from './config';
-
+import { log } from './logging';
 export function createStatusBarItem(): vscode.StatusBarItem {
     let statusBar = vscode.window.createStatusBarItem(
         vscode.StatusBarAlignment.Right,
@@ -21,7 +21,7 @@ export function createQuickPick() {
         if (selection[0].label === ADD_COMMAND) {
             vscode.commands.executeCommand("workbench.action.openSettings", `@id:shellbook.customCommands @ext:cherryamme.shellbook`);
         } else {
-            vscode.window.showInformationMessage(`Selected: ${selection[0].label}`);
+            log.appendLine(`Selected: ${selection[0].label}`);
             const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
             terminal.show();
             const picked: boolean = selection[0].picked === true;
@@ -38,6 +38,7 @@ export async function sendToTerminal(uri: vscode.Uri, range: vscode.Range) {
     const codeBlock = "(" + document.getText(range) + "\n)";
 
     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
+    log.appendLine(`Sending to terminal: ${codeBlock}`);
     terminal.show();
     terminal.sendText(codeBlock);
 }
@@ -48,6 +49,7 @@ export async function sendToQsub(uri: vscode.Uri, range: vscode.Range, firstWord
 
     // Send the code chunk to the terminal using echo command
     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
+    log.appendLine(`qsub Sending to terminal: ${code}`);
     terminal.show();
     let command = settings.qsubConfig.toString().replace('${code}', code.toString());
     command = command.replace('${title}', firstWord);
