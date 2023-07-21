@@ -5,6 +5,7 @@ import { sendToTerminal,sendToQsub,createQuickPick,createStatusBarItem,ADD_COMMA
 import { log } from "./modules/logging";
 import { settings,updateSettings } from "./modules/config";
 import { RunShellCodeLensProvider,codeChunkDecorationType,updateDecorations } from "./modules/codechunk";
+import { provideDocumentFormattingEdits } from "./modules/codeformater";
 
 export function activate(context: vscode.ExtensionContext) {
     log.appendLine('shell Book extension activated');
@@ -55,6 +56,19 @@ export function activate(context: vscode.ExtensionContext) {
                 updateSettings();
             }
         });
+
+
+
+
+
+        // add code format
+        const provider = {
+            provideDocumentFormattingEdits,
+        };
+    
+        const selector = { scheme: 'file', language: 'shellscript' };
+        context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(selector, provider));
+    
 }
 
 

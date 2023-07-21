@@ -3,7 +3,7 @@
   "publisher": "cherryamme",
   "displayName": "Shell Book",
   "description": "让你的shell脚本像notebook一样好用，显示codechunk，添加snippets，增强shell脚本开发体验，快速执行自定义指令",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "icon": "icon.png",
   "repository": {
 		"type": "git",
@@ -16,7 +16,8 @@
     "Other"
   ],
   "files": [
-    "functions.sh"
+    "functions.sh",
+    "shfmt"
   ],
   "activationEvents": [
     "onLanguage:shellscript",
@@ -27,7 +28,7 @@
     "commands": [
       {
         "command": "shellbook.quickPickCommand",
-        "title": "quickPickCommand"
+        "title": "customCommands"
       }
     ],
     "configuration": {
@@ -41,8 +42,8 @@
         "shellbook.chunkFormat": {
           "type": "array",
           "default": [
-              { "id": 1,"start": "### ", "end": "### " },
-              { "id": 2,"start": "stepon ", "end": "stepoff " }
+              { "id": 1,"start": "###", "end": "###" },
+              { "id": 2,"start": "stepon", "end": "stepoff" }
           ],
           "description": "Definite Chunk style for the extension."
       },
