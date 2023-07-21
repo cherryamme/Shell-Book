@@ -41,8 +41,8 @@
         "shellbook.chunkFormat": {
           "type": "array",
           "default": [
-              { "id": 1,"start": "###", "end": "###" },
-              { "id": 2,"start": "stepon", "end": "stepoff" }
+              { "id": 1,"start": "### ", "end": "### " },
+              { "id": 2,"start": "stepon ", "end": "stepoff " }
           ],
           "description": "Definite Chunk style for the extension."
       },
