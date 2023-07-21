@@ -17,27 +17,32 @@ export class RunShellCodeLensProvider implements vscode.CodeLensProvider {
     const text = document.getText();
     const lines = text.split(/\r?\n/);
 
-    let startLine = -1;
-    let endLine = -1;
+    const startLines: Record<string, number> = {};
+    const endLines: Record<string, number> = {};
     let title = "";
-    let currentChunkId: string | null = null;
-    let isStart = true;
+    const isStart: Record<string, boolean> = {};
 
+    // Initialize isStart values for each chunk
+    this.chunkConfig.forEach((chunk) => {
+      isStart[chunk.id] = true;
+      startLines[chunk.id] = -1;
+      endLines[chunk.id] = -1;
+    });
+    
     lines.forEach((line, lineNumber) => {
-      const chunkStart = this.chunkConfig.find((chunk) => line.startsWith(chunk.start) && (currentChunkId === null || chunk.id !== currentChunkId));
-      const chunkEnd = this.chunkConfig.find((chunk) => line.startsWith(chunk.end) && chunk.id === currentChunkId);
+      const chunkStart = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.start}(?!${chunk.start.charAt(chunk.start.length - 1)})`)));
+      const chunkEnd = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.end}(?!${chunk.end.charAt(chunk.start.length - 1)})`)));
 
-      if (chunkStart && (isStart || chunkStart.id !== currentChunkId)) {
-        startLine = lineNumber;
-        currentChunkId = chunkStart.id;
+      if (chunkStart && isStart[chunkStart.id]) {
+        startLines[chunkStart.id] = lineNumber;
         // Extract the first word after 'start'
         title = line.split(/\s+/)[1] || "null";
-        isStart = !isStart;
-      } else if (chunkEnd && !isStart) {
-        endLine = lineNumber;
+        isStart[chunkStart.id] = false;
+      } else if (chunkEnd) {
+        endLines[chunkEnd.id] = lineNumber;
         const codeChunkRanges: vscode.Range[] = [];
-        if (startLine !== -1) {
-          const range = new vscode.Range(startLine, 0, endLine, lines[endLine].length);
+        if (startLines[chunkEnd.id] !== -1) {
+          const range = new vscode.Range(startLines[chunkEnd.id], 0, endLines[chunkEnd.id], lines[endLines[chunkEnd.id]].length);
           const sendToTerminalCodeLens = new vscode.CodeLens(range, {
             title: 'Send to Terminal',
             command: 'shellbook.sendToTerminal',
@@ -53,17 +58,17 @@ export class RunShellCodeLensProvider implements vscode.CodeLensProvider {
 
           this.codeLenses.push(sendToTerminalCodeLens);
           this.codeLenses.push(sendToQsubCodeLens);
-          codeChunkRanges.push(new vscode.Range(startLine, 0, endLine, lines[endLine].length));
+          codeChunkRanges.push(new vscode.Range(startLines[chunkEnd.id], 0, endLines[chunkEnd.id], lines[endLines[chunkEnd.id]].length));
 
         }
-        currentChunkId = null;
-        isStart = !isStart;
+        isStart[chunkEnd.id] = true;
       }
     });
 
     return this.codeLenses;
   }
 }
+
 
 
 export const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
