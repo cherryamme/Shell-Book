@@ -34,6 +34,11 @@
     "configuration": {
       "title": "shellbook",
       "properties": {
+        "shellbook.chunkbackgroudcolor": {
+          "type": "string",
+          "default": "rgba(56, 56, 56, 0.5)",
+          "description": "Customize the backgroud color for the chunk."
+      },
         "shellbook.qsubCommandFormat": {
           "type": "string",
           "default": "echo -e '${code}' | qsub -cwd -l vf=1G,p=1 -P B2C_RDS -S /bin/bash -q b2c_rd_s1.q -N ${title}",

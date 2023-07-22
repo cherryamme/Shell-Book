@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { settings } from "./config";
-
+import {log} from "./logging";
 interface Chunk {
   start: string;
   end: string;
@@ -72,12 +72,6 @@ export class RunShellCodeLensProvider implements vscode.CodeLensProvider {
 
 
 
-export const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
-	backgroundColor: 'rgba(56, 56, 56, 0.5)',
-	borderRadius: '0px',
-	isWholeLine: true
-});
-
 
 export async function updateDecorations(editor: vscode.TextEditor | undefined,provider: RunShellCodeLensProvider) {
 	if (editor && editor.document.languageId === 'shellscript') {
@@ -88,7 +82,14 @@ export async function updateDecorations(editor: vscode.TextEditor | undefined,pr
 		const attemptInterval = 1000; // 2000 milliseconds = 2 seconds
 		const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+    let backgroundColor = settings.chunkbackgroudcolor || "rgba(56, 56, 56, 0.5)";
+    log.appendLine(`background color is ${backgroundColor}`);
 
+    const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
+    	backgroundColor: backgroundColor,
+    	borderRadius: '0px',
+    	isWholeLine: true
+    });
 		for (let attempt = 0; attempt < maxAttempts; attempt++) {
 			if (codeChunks) {
 				const codeChunkRanges = codeChunks.map(chunk => chunk.range);

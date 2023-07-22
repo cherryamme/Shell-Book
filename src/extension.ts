@@ -4,7 +4,7 @@ import {addFunctionsToBashrc} from './modules/loading';
 import { sendToTerminal,sendToQsub,createQuickPick,createStatusBarItem,ADD_COMMAND } from "./modules/command";
 import { log } from "./modules/logging";
 import { settings,updateSettings } from "./modules/config";
-import { RunShellCodeLensProvider,codeChunkDecorationType,updateDecorations } from "./modules/codechunk";
+import { RunShellCodeLensProvider,updateDecorations } from "./modules/codechunk";
 import { provideDocumentFormattingEdits } from "./modules/codeformater";
 
 export function activate(context: vscode.ExtensionContext) {
