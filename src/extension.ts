@@ -35,20 +35,36 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('shellbook.sendToQsub', sendToQsub));
     // Register the 'extension.sendToQsub' command
     context.subscriptions.push(vscode.commands.registerCommand('shellbook.sendToTerminal', sendToTerminal));
-
-
+    
+    
     vscode.workspace.onDidSaveTextDocument(async (document) => {
+        if (document && document.languageId === 'shellscript') {
         await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
-    });
+        
+        log.append(`\nonDidSaveTextDocument: ${document.fileName}`);
+        }
+    }
+    );
     vscode.workspace.onDidOpenTextDocument(async (document) => {
-        await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+        if (document && document.languageId === 'shellscript') {
+        if (vscode.window.activeTextEditor) {
+            await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+            log.append(`\nonDidOpenTextDocument: ${document.fileName}`);
+        }
+    }
     });
-
+    
     vscode.window.onDidChangeActiveTextEditor(async (event) => {
-        await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+        if (event && event.document && event.document.languageId === 'shellscript') {
+            log.append(`\nonDidChangeActiveTextEditor: ${event.document.fileName}`);
+            await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+        }
     });
     vscode.workspace.onDidChangeTextDocument(async (event) => {
-        await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+        if (event.contentChanges.length > 0 && vscode.window.activeTextEditor && event.document.languageId === 'shellscript') {
+            await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
+            log.append(".");
+        }
     });
 
     vscode.workspace.onDidChangeConfiguration((e) => {
