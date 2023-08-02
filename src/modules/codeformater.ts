@@ -6,6 +6,7 @@ import * as path from 'path';
 export async function provideDocumentFormattingEdits(document: vscode.TextDocument): Promise<vscode.TextEdit[]> {
     return new Promise((resolve, reject) => {
         // 调用shc程序处理文件
+        log.appendLine('\nStart to format shell script');
 		const extensionPath = vscode.extensions.getExtension('cherryamme.shellbook')?.extensionPath;
 		if (!extensionPath) {
 			log.appendLine('Failed to get extension path');
@@ -32,6 +33,7 @@ export async function provideDocumentFormattingEdits(document: vscode.TextDocume
 
             // 返回一个包含替换操作的TextEdit数组
             resolve([textEdit]);
+            log.appendLine('shell script format success!');
         });
     });
 }
