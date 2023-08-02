@@ -38,7 +38,7 @@ export async function sendToTerminal(uri: vscode.Uri, range: vscode.Range) {
     const codeBlock = "(" + document.getText(range) + "\n)";
 
     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
-    log.appendLine(`Sending to terminal: ${codeBlock}`);
+    log.appendLine(`\nSending to terminal: ${codeBlock}`);
     terminal.show();
     terminal.sendText(codeBlock);
 }
@@ -49,7 +49,7 @@ export async function sendToQsub(uri: vscode.Uri, range: vscode.Range, firstWord
 
     // Send the code chunk to the terminal using echo command
     const terminal = vscode.window.activeTerminal || vscode.window.createTerminal();
-    log.appendLine(`qsub Sending to terminal: ${code}`);
+    log.appendLine(`\nqsub Sending to terminal: ${code}`);
     terminal.show();
     let command = settings.qsubConfig.toString().replace('${code}', code.toString());
     command = command.replace('${title}', firstWord);
