@@ -78,12 +78,12 @@ export async function updateDecorations(editor: vscode.TextEditor | undefined,pr
 		vscode.commands.executeCommand('setContext', 'isShellScript', true);
 		const codeChunks = await provider.provideCodeLenses(editor.document);
 
-		const maxAttempts = 3;
+		const maxAttempts = 2;
 		const attemptInterval = 1000; // 2000 milliseconds = 2 seconds
 		const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     let backgroundColor = settings.chunkbackgroudcolor || "rgba(56, 56, 56, 0.5)";
-    log.appendLine(`background color is ${backgroundColor}`);
+    // log.appendLine(`background color is ${backgroundColor}`);
 
     const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
     	backgroundColor: backgroundColor,
