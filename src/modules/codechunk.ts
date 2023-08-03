@@ -70,26 +70,21 @@ export class RunShellCodeLensProvider implements vscode.CodeLensProvider {
   }
 }
 
-
-
+const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
+  backgroundColor: settings.chunkbackgroudcolor || "rgba(56, 56, 56, 0.3)",
+  borderRadius: '0px',
+  isWholeLine: true
+});
 
 export async function updateDecorations(editor: vscode.TextEditor | undefined,provider: RunShellCodeLensProvider) {
 	if (editor && editor.document.languageId === 'shellscript') {
 		vscode.commands.executeCommand('setContext', 'isShellScript', true);
 		const codeChunks = await provider.provideCodeLenses(editor.document);
 
-		const maxAttempts = 2;
+		const maxAttempts = 1;
 		const attemptInterval = 1000; // 2000 milliseconds = 2 seconds
 		const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    let backgroundColor = settings.chunkbackgroudcolor || "rgba(56, 56, 56, 0.5)";
-    // log.appendLine(`background color is ${backgroundColor}`);
-
-    const codeChunkDecorationType = vscode.window.createTextEditorDecorationType({
-    	backgroundColor: backgroundColor,
-    	borderRadius: '0px',
-    	isWholeLine: true
-    });
 		for (let attempt = 0; attempt < maxAttempts; attempt++) {
 			if (codeChunks) {
 				const codeChunkRanges = codeChunks.map(chunk => chunk.range);
