@@ -3,12 +3,12 @@
   "publisher": "cherryamme",
   "displayName": "Shell Book",
   "description": "让你的shell脚本像notebook一样好用，显示codechunk，添加snippets，增强shell脚本开发体验，快速执行自定义指令",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "icon": "icon.png",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/cherryamme/Shell-Book.git"
-	},
+    "type": "git",
+    "url": "https://github.com/cherryamme/Shell-Book.git"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -25,6 +25,12 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "shellscript",
+        "path": "./snippets/shell.json"
+      }
+    ],
     "commands": [
       {
         "command": "shellbook.quickPickCommand",
@@ -39,33 +45,47 @@
           "default": "rgba(56, 56, 56, 0.5)",
           "description": "Customize the backgroud color for the chunk.",
           "scope": "window"
-      },
+        },
         "shellbook.qsubCommandFormat": {
           "type": "string",
           "default": "echo -e '${code}' | qsub -cwd -l vf=1G,p=1 -P B2C_RDS -S /bin/bash -q b2c_rd_s1.q -N ${title}",
           "description": "Customize the format for the qsub command.${code} is code chunk,${title} is code chunk title after chunkstart."
-      },
+        },
         "shellbook.chunkFormat": {
           "type": "array",
           "default": [
-              { "id": 1,"start": "###", "end": "###" },
-              { "id": 2,"start": "stepon", "end": "stepoff" }
+            {
+              "id": 1,
+              "start": "###",
+              "end": "###"
+            },
+            {
+              "id": 2,
+              "start": "stepon",
+              "end": "stepoff"
+            }
           ],
           "description": "Definite Chunk style for the extension."
-      },
+        },
         "shellbook.customCommands": {
           "type": "array",
           "default": [
+            {
+              "label": "😎查看SGE正在进行的任务",
+              "description": "qstat -u \\* -q b2c_rd_s1.q  -s r |less",
+              "picked": true
+            },
+            {
+              "label": "😎查看SGE负载情况",
+              "description": "qstat -F p,vf  -q b2c_rd_s1.q |less",
+              "picked": true
+            },
             {
               "label": "🤣监控qstat任务",
               "description": "watch -n 1 'qstat' ",
               "picked": true
             },
-            {
-              "label": "😆查看SGE任务",
-              "description": "qstat -F p,vf  -q b2c_rd_s1.q |less",
-              "picked": true
-            },
+
             {
               "label": "🤐统计当前目录存储大小",
               "description": "du -sh .",
