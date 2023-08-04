@@ -1,0 +1,27 @@
+{
+    "Code Chunk ###": {
+        "prefix": ["codechunk", "chunk"],
+        "body": [
+            "### $1",
+            "$2",
+            "### "
+        ],
+        "description": "Code chunk without timer"
+    },
+    "Code Chunk Step": {
+        "prefix": ["stepon","codechunk with timer","chunk with timer"],
+        "body": [
+            "stepon $1",
+            "$2",
+            "stepoff $1"
+        ],
+        "description": "Code chunk with timer"
+    },
+    "Code chunk timer summarize": {
+        "prefix": "stepall",
+        "body": [
+            "stepall"
+        ],
+        "description": "Code chunk timer summarize"
+    }
+}
