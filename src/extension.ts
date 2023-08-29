@@ -5,6 +5,7 @@ import { sendToTerminal,sendToQsub,createQuickPick,createStatusBarItem,ADD_COMMA
 import { log } from "./modules/logging";
 import { settings,updateSettings } from "./modules/config";
 import { RunShellCodeLensProvider,updateDecorations } from "./modules/codechunk";
+import { RunShellDocumentSymbolProvider } from "./modules/chunksymbol";
 import { provideDocumentFormattingEdits } from "./modules/codeformater";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -36,7 +37,10 @@ export function activate(context: vscode.ExtensionContext) {
     // Register the 'extension.sendToQsub' command
     context.subscriptions.push(vscode.commands.registerCommand('shellbook.sendToTerminal', sendToTerminal));
     
-    
+    const runShellDocumentSymbolProvider = new RunShellDocumentSymbolProvider();
+    context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider({ language: 'shellscript' },runShellDocumentSymbolProvider));
+
+
     vscode.workspace.onDidSaveTextDocument(async (document) => {
         if (document && document.languageId === 'shellscript') {
         await updateDecorations(vscode.window.activeTextEditor,runShellCodeLensProvider);
