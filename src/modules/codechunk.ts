@@ -30,8 +30,8 @@ export class RunShellCodeLensProvider implements vscode.CodeLensProvider {
     });
     
     lines.forEach((line, lineNumber) => {
-      const chunkStart = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.start}(\\s|(?!${chunk.start.charAt(chunk.start.length - 1)}))`)));
-      const chunkEnd = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.end}(\\s|(?!${chunk.end.charAt(chunk.end.length - 1)}))`)));
+      const chunkStart = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.start}(\\s|$|(?!${chunk.start.charAt(chunk.start.length - 1)}))`)));
+      const chunkEnd = this.chunkConfig.find((chunk) => line.match(new RegExp(`^\\s*${chunk.end}(\\s|$|(?!${chunk.end.charAt(chunk.end.length - 1)}))`)));
 
 
       if (chunkStart && isStart[chunkStart.id]) {
